@@ -46,7 +46,6 @@ namespace MyBlog.Infrastructure.Repositories
             }
         }
 
-        // NEW: add posts only if they don't exist (by ID)
         public async Task AddRangeIfNotExistsAsync(IEnumerable<Post> posts)
         {
             foreach (var post in posts)

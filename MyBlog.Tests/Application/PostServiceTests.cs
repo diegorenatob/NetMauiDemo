@@ -20,7 +20,6 @@ namespace MyBlog.Tests.Application
             _mockPostRepository = new Mock<IPostRepository>();
             _mockExternalService = new Mock<IExternalPostService>();
             _mockConnectivityService = new Mock<IConnectivityService>();
-            // Creamos el PostService inyectando los mocks
             _postService = new PostService(_mockPostRepository.Object, _mockExternalService.Object,_mockConnectivityService.Object);
         }
 
@@ -46,32 +45,25 @@ namespace MyBlog.Tests.Application
         [Test]
         public async Task CreatePostAsync_WhenCalled_InvokesAddOnRepository()
         {
-            // Arrange
             var newPostDto = new PostDto { Id = 3, Title = "Title3", Body = "Body3" };
 
-            // Act
             await _postService.CreatePostAsync(newPostDto);
 
-            // Assert
-            // Verificamos que se llamó a AddAsync en el repositorio exactamente 1 vez
+         
             _mockPostRepository.Verify(r => r.AddAsync(It.IsAny<Post>()), Times.Once);
         }
 
         [Test]
         public async Task FetchAndStoreNewPostsAsync_WhenCalled_FetchesAndAddsNewPosts()
         {
-            // Arrange
             var externalPosts = new List<PostDto>
             {
                 new PostDto { Id = 100, Title = "External Title", Body = "Some Body" }
             };
             _mockExternalService.Setup(s => s.FetchPostsAsync()).ReturnsAsync(externalPosts);
 
-            // Act
             await _postService.FetchAndStoreNewPostsAsync();
 
-            // Assert
-            // Verificamos que se llamará AddRangeIfNotExistsAsync en el repositorio
             _mockPostRepository.Verify(r => r.AddRangeIfNotExistsAsync(It.Is<IEnumerable<Post>>(posts => posts.Any(p => p.Id == 100))), Times.Once);
         }
     }

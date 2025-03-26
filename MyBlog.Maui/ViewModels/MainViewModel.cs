@@ -35,7 +35,6 @@ namespace MyBlog.Maui.ViewModels
 
             RefreshCommand = new Command(async () => await RefreshPostsAsync());
 
-            // Load initially
             Task.Run(LoadPostsAsync);
         }
 
@@ -53,7 +52,6 @@ namespace MyBlog.Maui.ViewModels
         {
             IsRefreshing = true;
 
-            // 1) Fetch remote + store new in DB
             try
             {
                 await _postService.FetchAndStoreNewPostsAsync();
@@ -65,7 +63,6 @@ namespace MyBlog.Maui.ViewModels
                 return;
             }
 
-            // 2) Reload from local DB
             await LoadPostsAsync();
 
             IsRefreshing = false;

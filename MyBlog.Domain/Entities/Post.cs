@@ -2,12 +2,10 @@ namespace MyBlog.Domain.Entities
 {
     public class Post
     {
-        // We'll use the same ID as the remote API (jsonplaceholder)
         public int Id { get; private set; }
         public string Title { get; private set; }
         public string Body { get; private set; }
 
-        // EF Core requires a parameterless constructor for migrations
         private Post() { }
 
         public Post(int id, string title, string body)

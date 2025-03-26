@@ -10,10 +10,10 @@
     <RefreshView
         IsRefreshing="{Binding IsRefreshing}"
         Command="{Binding RefreshCommand}">
-
-        <StackLayout
-            Padding="16"
-            Spacing="8">
+        
+        <!-- <StackLayout -->
+        <!--     Padding="16" -->
+        <!--     Spacing="8"> -->
 
             <!-- Título de la página -->
             <!-- <Label  -->
@@ -24,13 +24,14 @@
             <!-- Lista de Posts -->
             <CollectionView
                 ItemsSource="{Binding Posts}"
-                SelectionMode="None">
+                SelectionMode="None"
+                Margin="16" 
+                >
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <!-- Aplica el estilo de Frame -->
-                        <Frame Style="{StaticResource FramePostStyle}">
-                            <StackLayout>
+                        <Frame Style="{StaticResource FramePostStyle}" >
+                            <StackLayout Spacing="8">
                                 <Label
                                     Text="{Binding Title}"
                                     Style="{StaticResource TitleLabelStyle}"
@@ -54,6 +55,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </StackLayout>
+        <!-- </StackLayout> -->
     </RefreshView>
 </ContentPage>
