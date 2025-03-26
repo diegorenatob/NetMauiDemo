@@ -9,7 +9,6 @@ namespace MyBlog.Infrastructure.Data
         {
             var builder = new DbContextOptionsBuilder<MyBlogDbContext>();
 
-            // Cadena para diseño (no es la que se usará en tiempo de ejecución de MAUI)
             builder.UseSqlite("Data Source=LocalDesignTime.db");
 
             return new MyBlogDbContext(builder.Options);

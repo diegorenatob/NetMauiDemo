@@ -9,11 +9,14 @@ namespace MyBlog.Application.Services
     {
         private readonly IPostRepository _postRepository;
         private readonly IExternalPostService _externalService; 
+        private readonly IConnectivityService _connectivityService;
 
-        public PostService(IPostRepository postRepository, IExternalPostService externalService)
+        public PostService(IPostRepository postRepository, IExternalPostService externalService,IConnectivityService connectivityService)
         {
             _postRepository = postRepository;
             _externalService = externalService; 
+            _connectivityService = connectivityService;
+
         }
 
 
@@ -33,9 +36,11 @@ namespace MyBlog.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task CreatePostAsync(PostDto postDto)
+        public async Task CreatePostAsync(PostDto postDto)
         {
-            throw new NotImplementedException();
+            var post = new Post(postDto.Id, postDto.Title, postDto.Body);
+
+            await _postRepository.AddAsync(post);
         }
 
         public Task UpdatePostAsync(PostDto postDto)
@@ -51,7 +56,10 @@ namespace MyBlog.Application.Services
 
         public async Task FetchAndStoreNewPostsAsync()
         {
-            // 2) Use the interface method
+            if (!_connectivityService.HasInternetConnection())
+            {
+                throw new InvalidOperationException("No internet connection available.");
+            }
             var remotePosts = await _externalService.FetchPostsAsync();
 
             var domainPosts = remotePosts.Select(rp => new Post(rp.Id, rp.Title, rp.Body)).ToList();

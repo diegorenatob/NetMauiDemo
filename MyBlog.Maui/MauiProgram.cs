@@ -6,6 +6,7 @@ using MyBlog.Domain.Interfaces;
 using MyBlog.Infrastructure.Data;
 using MyBlog.Infrastructure.Repositories;
 using MyBlog.Infrastructure.ServicesExtern;
+using MyBlog.Maui.Services;
 using MyBlog.Maui.ViewModels;
 using MyBlog.Maui.Views;
 
@@ -65,9 +66,14 @@ namespace MyBlog.Maui
 
             // --- 4) Servicios (Application layer)
             builder.Services.AddTransient<IPostService, PostService>();
+            builder.Services.AddTransient<IConnectivityService, MauiConnectivityService>();
+
 
             // --- 5) ViewModels
             builder.Services.AddTransient<MainViewModel>();
+            builder.Services.AddTransient<PostDetailViewModel>();
+            builder.Services.AddTransient<PostDetailPage>();
+
 
             // --- 6) Pages
             builder.Services.AddTransient<MainPage>();
