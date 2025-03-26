@@ -63,7 +63,7 @@ This repository demonstrates a multi-layer, Domain-Driven Design (DDD) approach 
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/<your-repo>/NetMauiDemo.git
+   git clone https://github.com/diegorenatob/NetMauiDemo.git
    cd NetMauiDemo
    ```
 
