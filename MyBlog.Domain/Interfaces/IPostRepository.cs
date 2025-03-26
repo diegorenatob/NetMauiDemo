@@ -9,8 +9,6 @@ namespace MyBlog.Domain.Interfaces
         Task AddAsync(Post post);
         Task UpdateAsync(Post post);
         Task DeleteAsync(int id);
-
-        // New method: add a batch of posts if they don't exist already
         Task AddRangeIfNotExistsAsync(IEnumerable<Post> posts);
     }
 }

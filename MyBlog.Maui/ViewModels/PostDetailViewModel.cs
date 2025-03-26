@@ -8,8 +8,14 @@ namespace MyBlog.Maui.ViewModels
     public partial class PostDetailViewModel : ObservableObject
     {
         [ObservableProperty]
-        private PostDto post;
-
+        private PostDto _post;
+     
+       // Código generado automáticamente
+        // public PostDto Post
+        // {
+        //     get => _post;
+        //     set => SetProperty(ref _post, value);
+        // }
         public PostDetailViewModel()
         {
          

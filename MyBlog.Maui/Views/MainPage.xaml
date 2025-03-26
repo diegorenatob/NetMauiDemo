@@ -3,7 +3,6 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:MyBlog.Maui.ViewModels"
     x:Name="This"
     x:Class="MyBlog.Maui.Views.MainPage"
     Title="My Blog Posts">
@@ -45,15 +44,13 @@
                                 <Label
                                     Text="{Binding Body}"
                                     Style="{StaticResource BodyLabelStyle}" />
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=OpenPostCommand}" 
-                                        CommandParameter="{Binding .}" />
-                                </StackLayout.GestureRecognizers>
                             </StackLayout>
-                           
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding BindingContext.OpenPostCommand, Source={x:Reference This}}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
                         </Frame>
-                    
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

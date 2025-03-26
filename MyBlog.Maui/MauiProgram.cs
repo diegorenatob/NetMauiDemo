@@ -24,64 +24,57 @@ namespace MyBlog.Maui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            // --- 1) Configurar el DbContext para SQLite
             builder.Services.AddDbContext<MyBlogDbContext>(options =>
             {
                 try
                 {
-                    // Obtenemos la ruta base
                     var dbDirectory = FileSystem.AppDataDirectory;
 
-                    // Verificamos que el directorio exista; si no, lo creamos
                     if (!Directory.Exists(dbDirectory))
                     {
                         Directory.CreateDirectory(dbDirectory);
                         Console.WriteLine($"[DEBUG] Created directory: {dbDirectory}");
                     }
 
-                    // Armamos la ruta completa del archivo .db3
                     var dbPath = Path.Combine(dbDirectory, "myblog.db3");
                     Console.WriteLine($"[DEBUG] Using database path: {dbPath}");
 
-                    // Configuramos EF Core para apuntar a esa ruta
                     options.UseSqlite($"Data Source={dbPath}");
                 }
                 catch (Exception ex)
                 {
-                    // Aquí podrías hacer más que un Console.WriteLine:
-                    // logs, telemetría, reintentos, etc.
+                   
                     Console.WriteLine($"[ERROR] Failed to configure DbContext: {ex.Message}");
                 }
             });
 
-            // --- 2) Repositorios
+            //  Repositorios
             builder.Services.AddTransient<IPostRepository, PostRepository>();
 
-            // --- 3) HttpClient + servicio externo
+            // Http Client
             builder.Services.AddHttpClient<IExternalPostService, JsonPlaceholderClient>(client =>
             {
                 client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
             });
 
 
-            // --- 4) Servicios (Application layer)
+            // Services
             builder.Services.AddTransient<IPostService, PostService>();
             builder.Services.AddTransient<IConnectivityService, MauiConnectivityService>();
 
 
-            // --- 5) ViewModels
+            // ViewModels
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<PostDetailViewModel>();
+
+
+            //  Pages
+            builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<PostDetailPage>();
 
-
-            // --- 6) Pages
-            builder.Services.AddTransient<MainPage>();
-
-            // --- 7) Construimos la app
             var app = builder.Build();
 
-            // --- 8) Aplicamos migraciones dentro de un scope
+            // migrations
             using (var scope = app.Services.CreateScope())
             {
                 try
@@ -92,10 +85,7 @@ namespace MyBlog.Maui
                 }
                 catch (Exception ex)
                 {
-                    // Manejo de error:
-                    // - Logs
-                    // - Telemetry
-                    // - Notificar al usuario
+                 
                     Console.WriteLine($"[ERROR] Error applying migrations: {ex}");
                 }
             }
